@@ -12,6 +12,7 @@ brew tap mreimbold/tap
 
 | Formula | Description |
 |---------|-------------|
+| `kaufda-cli` | CLI for kaufda.de local offers |
 | `withings-cli` | CLI for Withings Health API |
 | `terraformat` | Standalone Terraform/OpenTofu formatter that goes beyond terraform fmt and tofu fmt |
 
@@ -26,6 +27,7 @@ brew install mreimbold/tap/<formula>
 Or directly without tapping first:
 
 ```bash
+brew install mreimbold/tap/kaufda-cli
 brew install mreimbold/tap/withings-cli
 brew install mreimbold/tap/terraformat
 ```
