@@ -1,0 +1,65 @@
+name: Update README
+
+on:
+  push:
+    paths:
+      - 'Formula/*.rb'
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update README with formula list
+        run: |
+          echo "## Available Formulas" > /tmp/formulas.md
+          echo "" >> /tmp/formulas.md
+          echo "| Formula | Description |" >> /tmp/formulas.md
+          echo "|---------|-------------|" >> /tmp/formulas.md
+          
+          for file in Formula/*.rb; do
+            filename=$(basename "$file" .rb)
+            description=$(grep -E '^  desc "' "$file" | sed 's/^  desc "\(.*\)"/\1/')
+            echo "| \`$filename\` | $description |" >> /tmp/formulas.md
+          done
+          
+          # Sort alphabetically
+          tail -n +4 /tmp/formulas.md | sort >> /tmp/sorted_formulas.md
+          echo "## Available Formulas" > /tmp/formulas.md
+          echo "" >> /tmp/formulas.md
+          echo "| Formula | Description |" >> /tmp/formulas.md
+          echo "|---------|-------------|" >> /tmp/formulas.md
+          cat /tmp/sorted_formulas.md >> /tmp/formulas.md
+          
+          # Update README by replacing the formulas section
+          python3 << 'EOF'
+          import re
+          
+          with open('README.md', 'r') as f:
+              content = f.read()
+          
+          with open('/tmp/formulas.md', 'r') as f:
+              new_section = f.read()
+          
+          # Replace the existing Available Formulas section
+          pattern = r'## Available Formulas\n\n\| Formula \| Description \|\n\|--------\|-------------\|\n(.*?)(\n\n##|$)'
+          content = re.sub(pattern, new_section + '\n\n', content, flags=re.DOTALL)
+          
+          with open('README.md', 'w') as f:
+              f.write(content)
+          EOF
+
+      - name: Commit and push
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add README.md
+          git diff --staged --quiet || git commit -m "chore: update README formula list"
+          git push
