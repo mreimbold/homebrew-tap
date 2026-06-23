@@ -5,30 +5,30 @@
 class WithingsCli < Formula
   desc "CLI for Withings Health API"
   homepage "https://github.com/mreimbold/withings-cli"
-  version "0.1.3"
+  version "0.2.0"
   license "MIT"
 
   on_macos do
-    url "https://github.com/mreimbold/withings-cli/releases/download/v0.1.3/withings-cli_0.1.3_macos_universal.tar.gz"
-    sha256 "529a93ea080c93d23c83c9d8b5ea6d15b858b2e00b9001402abadd02b2068013"
+    url "https://github.com/mreimbold/withings-cli/releases/download/v0.2.0/withings-cli_0.2.0_macos_universal.tar.gz"
+    sha256 "7156a1bc92fab9a2556095439790446b8b18a97de30599d190b0f84b21d80378"
 
-    def install
+    define_method(:install) do
       bin.install "withings-cli"
     end
   end
 
   on_linux do
     if Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
-      url "https://github.com/mreimbold/withings-cli/releases/download/v0.1.3/withings-cli_0.1.3_linux_amd64.tar.gz"
-      sha256 "8032291855efc395f9efa2fd7f4b81952cda773d74e2b7140c780597d75e5ebe"
-      def install
+      url "https://github.com/mreimbold/withings-cli/releases/download/v0.2.0/withings-cli_0.2.0_linux_amd64.tar.gz"
+      sha256 "79ab45c420c87f54b9bc9175962d0a02bd3336affc66a7f48f1eb718e6205600"
+      define_method(:install) do
         bin.install "withings-cli"
       end
     end
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/mreimbold/withings-cli/releases/download/v0.1.3/withings-cli_0.1.3_linux_arm64.tar.gz"
-      sha256 "11bbb309c5314ef444c5610f961128562f22b58fc2b12f0183d1c3f017ea8d57"
-      def install
+      url "https://github.com/mreimbold/withings-cli/releases/download/v0.2.0/withings-cli_0.2.0_linux_arm64.tar.gz"
+      sha256 "76a646d9dc38ea391604d27e72b0abe488c042f180ee7c2596c1a2f300b8aabe"
+      define_method(:install) do
         bin.install "withings-cli"
       end
     end
